@@ -1,10 +1,11 @@
 import dash
-import dash_core_components as dcc
+from dash import dcc
 import pandas as pd
 import plotly.express as px
 
-ecom_sales = pd.read_csv('/usr/local/share/datasets/ecom_sales.csv')
-ecom_sales = ecom_sales.groupby(['Year-Month', 'Country'])['OrderValue'].agg('sum').reset_index(name='Total Sales ($)')
+ecom_sales = pd.read_csv('ecom_sales_by_month.csv')
+ecom_sales = ecom_sales.groupby(
+    ['Year-Month', 'Country'])['OrderValue'].agg('sum').reset_index(name='Total Sales ($)')
 line_fig = px.line(data_frame=ecom_sales, x='Year-Month',
                    y='Total Sales ($)', title='Total Sales by Month', color='Country')
 
