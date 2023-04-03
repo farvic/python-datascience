@@ -33,6 +33,26 @@ app.layout = html.Div(style={'backgroundColor': cyberpunk_colors['dark_bg']}, ch
         'color': cyberpunk_colors['light_fg']
     }),
 
+    # (
+    #                 xaxis=dict(title="GDP per capita",
+    #                            gridcolor=cyberpunk_colors['light_fg']),
+    #                 yaxis=dict(title="Life expectancy",
+    #                            gridcolor=cyberpunk_colors['light_fg']),
+    #                 margin=dict(l=50, r=50, b=50, t=50),
+    #                 hovermode="closest",
+    #                 plot_bgcolor=cyberpunk_colors['dark_bg'],
+    #                 paper_bgcolor=cyberpunk_colors['dark_bg'],
+    #                 font=dict(color=cyberpunk_colors['light_fg']),
+    #                 title=dict(
+    #                     text="Life Expectancy vs GDP per Capita (1952-2007)",
+    #                     font=dict(size=24, color=cyberpunk_colors['light_fg']),
+    #                     x=0.5,
+    #                     y=0.95,
+    #                     xanchor='center',
+    #                     yanchor='top'
+    #                 )
+    #             )
+
     dcc.Graph(
         id='scatter-plot',
         figure={
@@ -43,30 +63,11 @@ app.layout = html.Div(style={'backgroundColor': cyberpunk_colors['dark_bg']}, ch
                 ).update_traces(marker=dict(sizemode='diameter', sizeref=0.1, opacity=0.7, line_width=0))
                 for i in df.year.unique()
             ],
-            # 'layout': px.layout(
-            #     xaxis=dict(title="GDP per capita",
-            #                gridcolor=cyberpunk_colors['light_fg']),
-            #     yaxis=dict(title="Life expectancy",
-            #                gridcolor=cyberpunk_colors['light_fg']),
-            #     margin=dict(l=50, r=50, b=50, t=50),
-            #     hovermode="closest",
-            #     plot_bgcolor=cyberpunk_colors['dark_bg'],
-            #     paper_bgcolor=cyberpunk_colors['dark_bg'],
-            #     font=dict(color=cyberpunk_colors['light_fg']),
-            #     title=dict(
-            #         text="Life Expectancy vs GDP per Capita (1952-2007)",
-            #         font=dict(size=24, color=cyberpunk_colors['light_fg']),
-            #         x=0.5,
-            #         y=0.95,
-            #         xanchor='center',
-            #         yanchor='top'
-            #     )
-            # )
-        }
+        },
+
     )
 ])
 
 # Run the app
 if __name__ == '__main__':
     app.run_server(debug=True)
-
