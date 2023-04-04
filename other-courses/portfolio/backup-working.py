@@ -3,7 +3,13 @@ import dash_bootstrap_components as dbc
 import plotly.express as px
 
 # Create the app and set the stylesheet
-app = dash.Dash(__name__, external_stylesheets=[dbc.themes.SUPERHERO, dbc.icons.BOOTSTRAP], meta_tags=[
+app = dash.Dash(__name__, external_stylesheets=[dbc.themes.SUPERHERO, dbc.icons.BOOTSTRAP, {
+    "href": "https://fonts.googleapis.com/css2?family=Roboto&display=swap",
+    "rel": "stylesheet"
+}, {
+    "media": "(max-width: 536px)",
+    "href": "assets/mobile.css",
+}], meta_tags=[
     {"name": "viewport", "content": "width=device-width, initial-scale=1"}
 ])
 
@@ -12,6 +18,26 @@ app = dash.Dash(__name__, external_stylesheets=[dbc.themes.SUPERHERO, dbc.icons.
 images = ['https://via.placeholder.com/300x200.png?text=Image+1',
           'https://via.placeholder.com/300x200.png?text=Image+2',
           'https://via.placeholder.com/300x200.png?text=Image+3']
+
+# navbar = dbc.Navbar(
+#     [
+#         dbc.NavbarBrand("My Portfolio", href="/"),
+#         dbc.Nav(
+#             [
+#                 dbc.NavItem(dbc.NavLink("About", href="#about-section")),
+#                 dbc.NavItem(dbc.NavLink("Projects", href="#projects-section")),
+#                 dbc.NavItem(dbc.NavLink("Contactz", href="#contact-section")),
+#             ],
+#             className="ml-auto",
+#             navbar=True,
+#         ),
+#         dbc.NavbarToggler(id="navbar-toggler"),
+#     ],
+#     color="dark",
+#     dark=True,
+#     sticky="top",
+# )
+
 
 # Define the placeholder dashboard section
 dashboard = dbc.Container(
@@ -75,34 +101,30 @@ def new_card(title, description, screenshot_urls, technology_icons):
     )
 
 
-# we use the Row and Col components to construct the sidebar header
-# it consists of a title, and a toggle, the latter is hidden on large screens
-sidebar_header = dbc.Row(
-    [
-        dbc.Col(html.H2("Welcome :)", className="display-5")),
-        dbc.Col(
-            html.Button(
-                # use the Bootstrap navbar-toggler classes to style the toggle
-                html.Span(className="navbar-toggler-icon"),
-                className="navbar-toggler",
-                # the navbar-toggler classes don't set color, so we do it here
-                style={
-                    "color": "rgba(0,0,255,.5)",
-                    "border-color": "rgba(0,0,255,1)",
-                },
-                id="toggle",
+left_jumbotron = dbc.Col(
+    html.Div(
+        [
+            html.H2("Change the background", className="display-3"),
+            html.Hr(className="my-2"),
+            html.P(
+                "Swap the background-color utility and add a `.text-*` color "
+                "utility to mix up the look."
             ),
-            # the column containing the toggle will be only as wide as the
-            # toggle, resulting in the toggle being right aligned
-            width="auto",
-            # vertically align the toggle in the center
-            align="center",
-        ),
-    ]
+            dbc.Button("Example Button", color="light", outline=True),
+        ],
+        className="h-100 p-5 text-white bg-dark rounded-3",
+    ),
+    md=6,
 )
-# https://img.shields.io/badge/Python-white?logo=Python
-# https://img.shields.io/badge/Jupyter-white?logo=Jupyter
 
+
+jumbotron = dbc.Row(
+    [left_jumbotron],
+    className="align-items-md-stretch",
+)
+
+
+# Define contents of each section
 about_section = html.Div(
     dbc.Col(
         [
@@ -130,49 +152,13 @@ about_section = html.Div(
                 target="_blank",
                 className="ml-2 btn btn-info",
             ),
+
         ],
     ),
 )
 
-left_jumbotron = dbc.Col(
-    html.Div(
-        [
-            html.H2("Change the background", className="display-3"),
-            html.Hr(className="my-2"),
-            html.P(
-                "Swap the background-color utility and add a `.text-*` color "
-                "utility to mix up the look."
-            ),
-            dbc.Button("Example Button", color="light", outline=True),
-        ],
-        className="h-100 p-5 text-white bg-dark rounded-3",
-    ),
-    md=6,
-)
 
-right_jumbotron = dbc.Col(
-    html.Div(
-        [
-            html.H2("Add borders", className="display-3"),
-            html.Hr(className="my-2"),
-            html.P(
-                "Or, keep it light and add a border for some added definition "
-                "to the boundaries of your content."
-            ),
-            dbc.Button("Example Button", color="secondary", outline=True),
-        ],
-        className="h-100 p-5 bg-light border rounded-3",
-    ),
-    md=6,
-)
-
-jumbotron = dbc.Row(
-    [left_jumbotron, right_jumbotron],
-    className="align-items-md-stretch",
-)
-
-# Define the app layout with the card element
-project_section = html.Div(
+projects_section = html.Div(
     [
         dbc.Col(
             [
@@ -215,84 +201,147 @@ project_section = html.Div(
     className='container-fluid'
 )
 
+
 # Contact section
-contact_section = html.Div(
-    [
-        html.H3("Contact", id="contact-section"),
-        html.P("Content of the contact section..."),
-    ],
+contact_section = html.Div(id="contact-section", children=[
+    html.H2("Contact"),
+    html.P("You can contact me at:"),
+    html.P("Email: example@example.com"),
+    html.P("Phone: 123-456-7890"),
+],
     className="section",
 )
 
+
+# Define layout of sidebar
 sidebar = html.Div(
     [
-        sidebar_header,
-        about_section,
-        # we wrap the horizontal rule and short blurb in a div that can be
-        # hidden on a small screen
-        html.Div(
+        html.H2("Victor", className="display-4"),
+        # html.Hr(),
+        # dbc.Col(
+        #     html.Button(
+        #         # use the Bootstrap navbar-toggler classes to style the toggle
+        #         html.Span(className="navbar-toggler-icon"),
+        #         className="navbar-toggler",
+        #         # the navbar-toggler classes don't set color, so we do it here
+        #         style={
+        #             "color": "rgba(0,0,255,.5)",
+        #             "border-color": "rgba(0,0,255,1)",
+        #         },
+        #         id="toggle",
+        #     ),
+        #     # the column containing the toggle will be only as wide as the
+        #     # toggle, resulting in the toggle being right aligned
+        #     width="auto",
+        #     # vertically align the toggle in the center
+        #     align="center",
+        # ),
+        dbc.Collapse(dbc.Nav(
             [
-                html.Hr(),
-                html.P(
-                    "Heeeeeeeey there, I'm a sidebar! "
-                    ":)",
-                    className="lead",
-                ),
+                dbc.NavItem(dbc.NavLink("About", href="#about-section")),
+                dbc.NavItem(dbc.NavLink("Projects", href="#projects-section")),
+                dbc.NavItem(dbc.NavLink("Contact", href="#contact-section")),
             ],
-            id="blurb",
+            vertical=True,
+            pills=True,
         ),
-        # use the Collapse component to animate hiding / revealing links
-        dbc.Collapse(
-            dbc.Nav(
-                [
-                    dbc.NavLink(
-                        "Projects", href="projects-section", active="exact"),
-                    dbc.NavLink("Contact", href="contact-section",
-                                active="exact"),
-                ],
-                vertical=True,
-                pills=True,
-            ),
             id="collapse",
         ),
-    ],
-    className="sidebar col-md-2 ",
-    style={
-        # "position": "fixed",
-        # "top": "-1rem",
-        # "left": "0",
-        # "bottom": "0",
-        # "width": "15rem",
-        # "padding": "2rem 1rem",
-    },
 
+
+    ],
+    style={
+        "position": "fixed",
+        "top": "-1rem",
+        "left": "0",
+        "bottom": "0",
+        "width": "15rem",
+        "padding": "2rem 1rem",
+    },
 )
 
+
+# Define main content layout
 content = html.Div(
     [
-        project_section,
+        html.H2("Welcome to my portfolio", id="welcome_message"),
+        html.Hr(),
+        about_section,
+        projects_section,
         contact_section
     ],
-    className="content col-md-9"
+    # style={
+    #     "margin-left": "16rem",
+    #     "padding": "2rem",
+    # },
+    className="content",
 )
 
+
+# navbar_collapse = dbc.Collapse(
+#     navbar,
+#     id="navbar-collapse",
+#     navbar=True,
+#     is_open=False,
+# )
+
+# Define the layout
 app.layout = html.Div(
     [
-        dbc.Row([sidebar, content])
+        # navbar_collapse,
+        dbc.Row([
+            sidebar,
+            content,
+            html.A(
+                html.I(className="fas fa-chevron-up fa-3x"),
+                href="#navbar-collapse",
+                id="scroll-to-top",
+            ),
+        ]),
+
     ],
-    className="container-fluid"
+    className='container-fluid'
 )
 
+# callback to scroll to the contact section when the Contact link is clicked
 
-@ app.callback(
-    Output("collapse", "is_open"),
-    [Input("toggle", "n_clicks")],
-    [State("collapse", "is_open")],
-)
-def toggle_collapse(n, is_open):
-    if n:
-        return not is_open
-    return is_open
+
+# @app.callback(Output("page-content", "children"),
+#               [Input("collapse", "is_open")],
+#               [State("collapse", "is_open")],
+#               prevent_initial_call=True)
+# def scroll_to_contact(navbar_is_open, navbar_is_closed):
+#     if not navbar_is_open and navbar_is_closed:
+#         return [
+#             about_section,
+#             projects_section,
+#             dcc.Location(id="url", refresh=False),
+#             html.Div(id="contact-scroll-target"),
+#             contact_section,
+#         ]
+#     else:
+#         return [
+#             about_section,
+#             projects_section,
+#             contact_section,
+#         ]
+
+
+# @app.callback(
+#     Output("navbar-collapse", "is_open"),
+#     [Input("navbar-toggler", "n_clicks")],
+#     [State("navbar-collapse", "is_open")],
+# )
+# def toggle_navbar_collapse(n, is_open):
+#     if n:
+#         return not is_open
+#     return is_open
+
+
+# def toggle_collapse(n, is_open):
+#     if n:
+#         return not is_open
+#     return is_open
 
 
 if __name__ == '__main__':

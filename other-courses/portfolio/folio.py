@@ -134,40 +134,40 @@ sidebar_header = dbc.Row(
 # https://img.shields.io/badge/Python-white?logo=Python
 # https://img.shields.io/badge/Jupyter-white?logo=Jupyter
 
-sidebar = html.Div(
-    [
-        sidebar_header,
-        # we wrap the horizontal rule and short blurb in a div that can be
-        # hidden on a small screen
-        html.Div(
-            [
-                html.Hr(),
-                html.P(
-                    "Heeeeeeeey there, I'm a sidebar! "
-                    ":)",
-                    className="lead",
-                ),
-            ],
-            id="blurb",
-        ),
-        # use the Collapse component to animate hiding / revealing links
-        dbc.Collapse(
-            dbc.Nav(
-                [
-                    dbc.NavLink("About", href="/", active="exact"),
-                    dbc.NavLink(
-                        "Projects", href="#projects-section", active="exact"),
-                    dbc.NavLink("Contact", href="#contact-section",
-                                active="exact"),
-                ],
-                vertical=True,
-                pills=True,
-            ),
-            id="collapse",
-        ),
-    ],
-    className="sidebar col-md-2"
-)
+# sidebar = html.Div(
+#     [
+#         sidebar_header,
+#         # we wrap the horizontal rule and short blurb in a div that can be
+#         # hidden on a small screen
+#         html.Div(
+#             [
+#                 html.Hr(),
+#                 html.P(
+#                     "Heeeeeeeey there, I'm a sidebar! "
+#                     ":)",
+#                     className="lead",
+#                 ),
+#             ],
+#             id="blurb",
+#         ),
+#         # use the Collapse component to animate hiding / revealing links
+#         dbc.Collapse(
+#             dbc.Nav(
+#                 [
+#                     dbc.NavLink("About", href="/", active="exact"),
+#                     dbc.NavLink("Projects", href="/projects-section",
+#                                 active="exact"),
+#                     dbc.NavLink("Contact", href="/contact-section",
+#                                 active="exact"),
+#                 ],
+#                 vertical=True,
+#                 pills=True,
+#             ),
+#             id="collapse",
+#         ),
+#     ],
+#     className="sidebar col-md-2"
+# )
 
 # sidebar = html.Div(
 #     [
@@ -186,6 +186,9 @@ sidebar = html.Div(
 #     ],
 #     className="sidebar",
 # )
+
+# Define layout of sidebar
+
 
 about_section = html.Div(
     dbc.Col(
@@ -243,6 +246,30 @@ contact_section = html.Div(
     className="section",
 )
 
+sidebar = html.Div(
+    [
+        html.H2("My Portfolio", className="display-4"),
+        html.Hr(),
+        dbc.Nav(
+            [
+                dbc.NavItem(dbc.NavLink("About", href="#about_section")),
+                dbc.NavItem(dbc.NavLink("Projects", href="#projects_section")),
+                dbc.NavItem(dbc.NavLink("Contact", href="#contact_section")),
+            ],
+            vertical=True,
+            pills=True,
+        ),
+    ],
+    style={
+        "position": "fixed",
+        "top": "-1rem",
+        "left": "0",
+        "bottom": "0",
+        "width": "15rem",
+        "padding": "2rem 1rem",
+    },
+)
+
 # Define the callback for the hover effect
 
 
@@ -258,41 +285,8 @@ contact_section = html.Div(
 #     return {'background-image': f'url({images[next_image_index]})', 'transition': 'background-image 0.5s ease-in-out'}
 
 
-badge = dbc.Button(
-    [
-        "Notifications",
-        dbc.Badge("4", color="light", text_color="primary", className="ms-1"),
-    ],
-    color="primary",
-)
+content = html.Div(id="page-content")
 
-
-# Then we incorporate the snippet into our layout.
-# This example keeps it simple and just wraps it in a Container
-button = dbc.Container(badge, fluid=True)
-
-# content = html.Div(id="page-content")
-
-# app.layout = html.Div([dcc.Location(id="url"), sidebar, content])
-
-
-# @ app.callback(Output("page-content", "children"), [Input("url", "pathname")])
-# def render_page_content(pathname):
-#     if pathname == "/":
-#         return about_section
-#     elif pathname == "/projects-section":
-#         return project_section
-#     elif pathname == "/contact-section":
-#         return html.P("And contact links will be here.")
-#     # If the user tries to reach a different page, return a 404 message
-#     return html.Div(
-#         [
-#             html.H1("404: Not found", className="text-danger"),
-#             html.Hr(),
-#             html.P(f"The pathname {pathname} was not recognised..."),
-#         ],
-#         className="p-3 rounded-3",
-#     )
 
 # sidebar = html.Div(
 #     [
@@ -301,9 +295,9 @@ button = dbc.Container(badge, fluid=True)
 #         html.P("Navigate to:"),
 #         dbc.Nav(
 #             [
-#                 dbc.NavLink("About", href="#about-section"),
-#                 dbc.NavLink("Projects", href="#projects-section"),
-#                 dbc.NavLink("Contact", href="#contact-section"),
+#                 dbc.NavLink("About", href="about-section"),
+#                 dbc.NavLink("Projects", href="projects-section"),
+#                 dbc.NavLink("Contact", href="contact-section"),
 #             ],
 #             vertical=True,
 #             pills=True,
@@ -312,21 +306,42 @@ button = dbc.Container(badge, fluid=True)
 #     className="sidebar col-md-2"
 # )
 
-content = html.Div(
-    [
-        about_section,
-        project_section,
-        contact_section
-    ],
-    className="content col-md-9"
-)
+# content = html.Div(
+#     [
+#         about_section,
+#         project_section,
+#         contact_section
+#     ],
+#     className="content col-md-9"
+# )
 
-app.layout = html.Div(
-    [
-        dbc.Row([sidebar, content])
-    ],
-    className="container-fluid"
-)
+# app.layout = html.Div(
+#     [
+#         dbc.Row([sidebar, content])
+#     ],
+#     className="container-fluid"
+# )
+
+app.layout = html.Div([dcc.Location(id="url"), sidebar, content])
+
+
+@ app.callback(Output("page-content", "children"), [Input("url", "pathname")])
+def render_page_content(pathname):
+    if pathname == "/":
+        return about_section
+    elif pathname == "/projects-section":
+        return project_section
+    elif pathname == "/contact-section":
+        return contact_section
+    # If the user tries to reach a different page, return a 404 message
+    return html.Div(
+        [
+            html.H1("404: Not found", className="text-danger"),
+            html.Hr(),
+            html.P(f"The pathname {pathname} was not recognised..."),
+        ],
+        className="p-3 rounded-3",
+    )
 
 
 @ app.callback(

@@ -1,0 +1,22 @@
+#toggle {
+    display: none;
+}
+
+#collapse.collapse.show {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 1;
+    padding: 2rem;
+}
+
+#collapse.collapse.show .nav-link {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+
+#collapse.collapse.show .navbar-nav {
+    text-align: center;
+}
