@@ -20,3 +20,23 @@
 #collapse.collapse.show .navbar-nav {
     text-align: center;
 }
+
+/* style={"width": "980px", "height": "611px"}, */
+
+#dashboard {    
+    height: 200px;
+    width: 90%;
+}
+
+@media (min-width: 768px) {
+    /* .content {
+      margin-left: 16rem;
+      padding: 2rem,
+    } */
+
+    #dashboard {
+      /* height: 400px; */
+      height: 611px;
+      width: 980px;
+    }
+  }

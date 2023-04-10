@@ -3,7 +3,7 @@ import dash_bootstrap_components as dbc
 import plotly.express as px
 
 # Create the app and set the stylesheet
-app = dash.Dash(__name__, external_stylesheets=[dbc.themes.DARKLY, dbc.icons.BOOTSTRAP, {
+app = dash.Dash(__name__, external_stylesheets=[dbc.themes.SUPERHERO, dbc.icons.BOOTSTRAP, {
     "href": "https://fonts.googleapis.com/css2?family=Roboto&display=swap",
     "rel": "stylesheet"
 }, {
@@ -12,6 +12,11 @@ app = dash.Dash(__name__, external_stylesheets=[dbc.themes.DARKLY, dbc.icons.BOO
 }], meta_tags=[
     {"name": "viewport", "content": "width=device-width, initial-scale=1"}
 ])
+
+server = app.server
+
+app.title = "Victor Araujo's Portfolio"
+app._favicon = "favicon.png"
 
 
 # Define the list of images
@@ -26,7 +31,6 @@ navbar = dbc.Navbar(
             [
                 dbc.NavItem(dbc.NavLink("About", href="#about-section")),
                 dbc.NavItem(dbc.NavLink("Projects", href="#projects-section")),
-                dbc.NavItem(dbc.NavLink("Contactz", href="#contact-section")),
             ],
             className="ml-auto",
             navbar=True,
@@ -38,26 +42,14 @@ navbar = dbc.Navbar(
     sticky="top",
 )
 
-
-# Define the placeholder dashboard section
-dashboard = dbc.Container(
-    [
-
-        html.H2("Placeholder Dashboard",
-                className="text-info mb-4", id="projects-section", style={"size": "12", "offset": "0"},),
-        dcc.Graph(
-            figure=px.scatter(
-                x=[1, 2, 3], y=[1, 2, 3], title="Placeholder Graph"),
-            id="dashboard",
-        ),
-    ],
-
-    # className="mt-4",
+dashboard = html.Iframe(
+    src="https://app.powerbi.com/view?r=eyJrIjoiY2YxZjljNDEtNjQ3MC00NDI4LWE4OTYtZjQxOWI5NjA1MmJjIiwidCI6IjE0NjdmNGI5LWFlZWMtNGRiNy1iZWI3LWMxNmRmZTA4N2E1YSJ9&pageName=ReportSection",
+    id="dashboard",
+    className="mb-4",
 )
 
 
 def new_card(title, description, screenshot_urls, technology_icons):
-
     return dbc.Card(
         [
             dbc.CardImg(
@@ -69,15 +61,20 @@ def new_card(title, description, screenshot_urls, technology_icons):
                         description,
                         className="card-text",
                     ),
-                    dbc.Button("Go somewhere", color="primary",
-                               className="mr-1"),
+                    dbc.Button(
+                        html.I(className="bi bi-github 2x",
+                               children=" Source Code"),
+                        href="https://github.com/farvic",
+                        external_link=True,
+                        target="_blank",
+                        className="mr-1",
+                    ),
                     html.Div(
                         className="project-technologies",
                         children=[
                             html.Img(
                                 src=icon, className="project-technology-icon", style={"margin": "2px"}) for icon in technology_icons
                         ],
-
                         style={"margin-top": "20px",
                                "margin-bottom": "-10px", "align": "space-between"},
                     ),
@@ -87,29 +84,6 @@ def new_card(title, description, screenshot_urls, technology_icons):
         style={"width": "18rem"},
         className="mb-4",
     )
-
-
-left_jumbotron = dbc.Col(
-    html.Div(
-        [
-            html.H2("Change the background", className="display-3"),
-            html.Hr(className="my-2"),
-            html.P(
-                "Swap the background-color utility and add a `.text-*` color "
-                "utility to mix up the look."
-            ),
-            dbc.Button("Example Button", color="light", outline=True),
-        ],
-        className="h-100 p-5 text-white bg-dark rounded-3",
-    ),
-    md=6,
-)
-
-
-jumbotron = dbc.Row(
-    [left_jumbotron],
-    className="align-items-md-stretch",
-)
 
 
 # Define contents of each section
@@ -151,16 +125,31 @@ projects_section = html.Div(
     [
         dbc.Col(
             [
-                dashboard,
                 dbc.Col(
                     [
                         html.Div(
                             [
-                                html.H2('Projects'),
+                                html.H2('Projects', className='mb-4',),
+                                dbc.Col(
+                                    [
+                                        dbc.Row([html.P(
+                                            children=["Here's a dashboard I've been working on recently. You can interact with it! ",
+                                                      html.A("Click here",
+                                                             href="https://app.powerbi.com/view?r=eyJrIjoiY2YxZjljNDEtNjQ3MC00NDI4LWE4OTYtZjQxOWI5NjA1MmJjIiwidCI6IjE0NjdmNGI5LWFlZWMtNGRiNy1iZWI3LWMxNmRmZTA4N2E1YSJ9&pageName=ReportSection", target="_blank"),
+                                                      html.Span(
+                                                          " to open it in a new tab"),
+                                                      ],
+                                        )]),
+
+                                        html.Div(dashboard),
+                                    ],
+                                    align="start", className="mb-5",),
+                                html.P(
+                                    "Here are some more projects I've worked on recently. Click on the images to see the full project."),
                                 dbc.Row(
                                     children=[
                                         dbc.Col(
-                                            new_card(title='Project 1', description='This is a description of project 1',
+                                            new_card(title='Project 1', description='Coming soon...',
                                                      screenshot_urls=['https://via.placeholder.com/300x200.png?text=Image+1',
                                                                       'https://via.placeholder.com/300x200.png?text=Image+2'],
                                                      technology_icons=[
@@ -195,16 +184,16 @@ projects_section = html.Div(
             ]
         )
     ],
-    className='container-fluid mt-4 mb-8'
+    className='container-fluid mt-5 mb-8 mx-0 px-0',
 )
 
 
 # Contact section
 contact_section = html.Div(id="contact-section", children=[
     html.H2("Contact"),
-    html.P("You can contact me at:"),
-    html.P("Email: example@example.com"),
-    html.P("Phone: 123-456-7890"),
+    # html.P("You can contact me at:"),
+    # html.P("Email: example@example.com"),
+    # html.P("Phone: 123-456-7890"),
 ],
     className="section",
 )
@@ -234,23 +223,21 @@ sidebar = html.Div(
             align="center",
         ),
         dbc.Collapse(dbc.Nav(
-
             [
                 dbc.NavItem(dbc.NavLink("About", href="#about-section")),
                 dbc.NavItem(dbc.NavLink("Projects", href="#projects-section")),
-                dbc.NavItem(dbc.NavLink("Contact", href="#contact-section")),
+                dbc.NavItem(dbc.NavLink('Check out my resume',
+                                        href='/assets/Victor_Araujo_Data_Analyst.pdf', external_link=True, target='_blank', style={"padding-right": "0"}),),
             ],
             vertical=True,
             pills=True,
         ),
             id="collapse",
         ),
-
-
     ],
     style={
         "position": "fixed",
-        "top": "-1rem",
+        "top": "1rem",
         "left": "0",
         "bottom": "0",
         "width": "15rem",
@@ -264,7 +251,7 @@ content = html.Div(
     [
         about_section,
         projects_section,
-        contact_section
+        # contact_section
     ],
     className="content",
 )
